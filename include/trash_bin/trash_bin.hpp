@@ -22,11 +22,21 @@ class trash_bin {
 
 public:
   void inline reserve(size_t size) { bin.reserve(size); }
+
   template <typename T> void toss(T &&trash) {
     bin.emplace_back(std::make_unique<impl<T>>(std::forward<T>(trash)));
   }
   template <typename T, typename... Ts>
   void toss(T &&trash, Ts &&...more_trash) {
+    toss(std::forward<T>(trash));
+    toss(std::forward<Ts>(more_trash)...);
+  }
+  template <typename T> void toss(T *trash_ptr) {
+    // this is stupid but I guess it works.
+    auto ptr = std::unique_ptr<T>(trash_ptr);
+    toss(std::move(ptr));
+  }
+  template <typename T, typename... Ts> void toss(T *trash, Ts *...more_trash) {
     toss(std::forward<T>(trash));
     toss(std::forward<Ts>(more_trash)...);
   }

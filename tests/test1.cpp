@@ -34,8 +34,12 @@ int main() {
     auto c = object(3);
     auto d = object2(1);
     auto e = object2(2);
+    auto f = new object(4);
+    auto g = new object2(3);
     bin.reserve(3);
     bin.toss(std::move(a), std::move(b), std::move(c));
+    bin.toss(f);
+    bin.toss(g);
   }
   std::cout << bin.amount() << '\n';
   std::cout << "emptying trash\n";
